@@ -63,5 +63,5 @@ def get_license_plate(image_path):
     result_string = process_image(image_path)
     return result_string
     
-
-
+path_to_plate = input("Enter the path of the image: ")
+get_license_plate(path_to_plate)
