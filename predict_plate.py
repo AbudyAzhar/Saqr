@@ -29,11 +29,15 @@ def predictions_to_string(predictions):
 model = YOLO('best.pt')
 
 # Function to process an image and get the result string
-def process_image(image_path):
+def process_image(input):
     # Read the image
-    image = cv2.imread(image_path)
+    if(type(input) == str):
+        image = cv2.imread(input)
+    else:
+        image = input
+    
     if image is None:
-        raise ValueError(f"Image at path {image_path} could not be loaded.")
+        raise ValueError(f"Image at path {input} could not be loaded.")
     
     # Run inference
     results = model(image)
@@ -59,9 +63,9 @@ def process_image(image_path):
 
 # Example usage
 
-def get_license_plate(image_path):
-    result_string = process_image(image_path)
+def get_license_plate(input):
+    result_string = process_image(input)
     return result_string
     
-path_to_plate = input("Enter the path of the image: ")
-get_license_plate(path_to_plate)
+#path_to_plate = input("Enter the path of the image: ")
+#get_license_plate(path_to_plate)
