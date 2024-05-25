@@ -26,7 +26,7 @@ def predictions_to_string(predictions):
 
 # Load the YOLOv8 model
 #/////////////////////////////////////CHANGE PATH TO BEST MODEL//////////////////////////////////////////
-model = YOLO('/Users/abdulrahmanazhar/Downloads/Licence-Plate-Detection-using-TensorFlow-Lite-main/runs/detect/train11/weights/best.pt')
+model = YOLO('best.pt')
 
 # Function to process an image and get the result string
 def process_image(image_path):
