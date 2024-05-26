@@ -115,16 +115,20 @@ while True:
             if current_time - last_process_time >= 0.3:
                 cropped_plate = crop_and_return(frame, (ymin, xmin, ymax, xmax))
                 plate_characters = predict_plate.get_license_plate(cropped_plate)
-                print(f'Detected Plate: {plate_characters}')
+                
+                # Check if the detected plate matches the specified patterns
+                if plate_characters in ["4552KAA", "7158GGA"]:
+                    print(f'Detected Plate: {plate_characters}')
+                
                 last_process_time = current_time  # Update the last process time
                 index += 1
 
     # Update last_frame_had_plate
     last_frame_had_plate = current_frame_has_plate
 
-    #cv2.imshow('output', frame)
-    #if cv2.waitKey(1) & 0xFF == ord('q'):
-     #   break
+    cv2.imshow('output', frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 cap.release()
 cv2.destroyAllWindows()
