@@ -5,6 +5,7 @@ import os
 import time
 from tensorflow.lite.python.interpreter import Interpreter
 from matplotlib import pyplot as plt
+from playsound import playsound
 
 # Set paths and parameters
 modelpath = 'detect.tflite'
@@ -118,8 +119,8 @@ while True:
                 
                 # Check if the detected plate matches the specified patterns
                 if plate_characters in ["4552KAA", "7158GGA"]:
-                    print(f'Detected Plate: {plate_characters}')
-                
+                    print(f'Detected Plate!!!!!!!!!!!!!!!!: {plate_characters}')
+                    
                 last_process_time = current_time  # Update the last process time
                 index += 1
 
