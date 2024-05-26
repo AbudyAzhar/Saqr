@@ -11,7 +11,10 @@ def apply_nms(predictions, iou_threshold=0.7):
     boxes = predictions[:, :4]
     scores = predictions[:, 4]
     indices = cv2.dnn.NMSBoxes(boxes.tolist(), scores.tolist(), score_threshold=0.5, nms_threshold=iou_threshold)
-    return [predictions[i] for i in indices.flatten()]
+    if isinstance(indices, tuple) and len(indices) == 0:
+        return []  # Return an empty list if no boxes are left after NMS
+    else:
+        return [predictions[i] for i in indices]
 
 # Function to convert predictions to string
 def predictions_to_string(predictions):

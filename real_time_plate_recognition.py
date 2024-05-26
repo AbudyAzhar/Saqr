@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 modelpath = 'detect.tflite'
 lblpath = 'labelmap.txt'
 min_conf = 0.85  # Adjusted minimum confidence to 0.85
-cap = cv2.VideoCapture('demo2.mp4')
+cap = cv2.VideoCapture(0)
 crop_output_dir = 'cropped_plates'
 os.makedirs(crop_output_dir, exist_ok=True)
 
