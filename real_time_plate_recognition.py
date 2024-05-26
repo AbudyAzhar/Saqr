@@ -122,9 +122,9 @@ while True:
     # Update last_frame_had_plate
     last_frame_had_plate = current_frame_has_plate
 
-    cv2.imshow('output', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    #cv2.imshow('output', frame)
+    #if cv2.waitKey(1) & 0xFF == ord('q'):
+     #   break
 
 cap.release()
 cv2.destroyAllWindows()
