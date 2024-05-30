@@ -1,0 +1,119 @@
+/* General Styles */
+body {
+    background-color: #1e1e2f; /* Dark background */
+    color: #ffffff; /* Light text color */
+    font-family: 'Arial', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff; /* Ensure headers are white */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+a {
+    color: #1abc9c; /* Turquoise color for links */
+}
+
+a:hover {
+    color: #16a085; /* Darker turquoise on hover */
+}
+
+/* Streamlit specific adjustments */
+.css-1d391kg {
+    background-color: #1e1e2f;
+}
+
+.css-12w0qpk {
+    background-color: #1e1e2f;
+    border: 1px solid #3d3d5c;
+    color: #ffffff;
+}
+
+.css-1kyxreq {
+    background-color: #1e1e2f;
+    color: #ffffff;
+}
+
+.css-1v3fvcr, .css-1v3fvcr:hover {
+    background-color: #1abc9c;
+    color: white;
+}
+
+.css-qbe2hs, .css-qbe2hs:hover {
+    background-color: #16a085;
+    color: white;
+}
+
+/* Style the form elements */
+input[type=text], input[type=email], textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #3d3d5c;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    background-color: #3d3d5c;
+    color: #ffffff;
+}
+
+input[type=text]:focus, input[type=email]:focus, textarea:focus, select:focus {
+    border-color: #1abc9c;
+    outline: none;
+}
+
+/* Style the submit button */
+button[type=submit], .stButton button {
+    background-color: #1abc9c;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button[type=submit]:hover, .stButton button:hover {
+    background-color: #16a085;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+    color: #ffffff;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #3d3d5c;
+}
+
+table th {
+    background-color: #1abc9c;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #3d3d5c;
+}
+
+/* Streamlit Specific Element Adjustments */
+.css-1aumxhk, .css-1aumxhk div {
+    background-color: #1e1e2f;
+    color: #ffffff;
+}
+
+.css-1cpxqw2, .css-1cpxqw2 div {
+    background-color: #1e1e2f;
+    color: #ffffff;
+}
+
+/* Hide Streamlit Branding */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}

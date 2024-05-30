@@ -1,17 +1,17 @@
 import numpy as np
+import pandas as pd
 import predict_plate  # Ensure this module is accessible
 import cv2
 import os
 import time
 from tensorflow.lite.python.interpreter import Interpreter
 from matplotlib import pyplot as plt
-from playsound import playsound
 
 # Set paths and parameters
 modelpath = 'detect.tflite'
 lblpath = 'labelmap.txt'
 min_conf = 0.85  # Adjusted minimum confidence to 0.85
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("demo_4.mp4")
 crop_output_dir = 'cropped_plates'
 os.makedirs(crop_output_dir, exist_ok=True)
 
@@ -29,6 +29,11 @@ input_std = 127.5
 # Load label map
 with open(lblpath, 'r') as f:
     labels = [line.strip() for line in f.readlines()]
+# Create a CSV file with headers if it doesn't exist
+csv_file = 'detected.csv'
+if not os.path.isfile(csv_file):
+    df = pd.DataFrame(columns=['plate_number', 'detection_time', 'location'])
+    df.to_csv(csv_file, index=False)
 
 # Function to crop the English part of the license plate
 def crop_english_part(image):
@@ -56,12 +61,14 @@ def crop_english_part(image):
         print("No middle horizontal line detected.")
         return image  # Return the original image if no line is found
 
+
 # Function to crop and return the license plate
 def crop_and_return(image, box):
     ymin, xmin, ymax, xmax = box
     cropped_image = image[ymin:ymax, xmin:xmax]
     english_cropped_image = crop_english_part(cropped_image)
     return english_cropped_image
+
 
 index = 0
 last_frame_had_plate = False
@@ -109,18 +116,24 @@ while True:
             label = f'{object_name}: {int(scores[i] * 100)}%'
             label_size, base_line = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)
             label_ymin = max(ymin, label_size[1] + 10)
-            cv2.rectangle(frame, (xmin, label_ymin - label_size[1] - 10), (xmin + label_size[0], label_ymin + base_line - 10), (255, 255, 255), cv2.FILLED)
+            cv2.rectangle(frame, (xmin, label_ymin - label_size[1] - 10),
+                          (xmin + label_size[0], label_ymin + base_line - 10), (255, 255, 255), cv2.FILLED)
             cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
 
             # Check if it's time to process the frame
-            if current_time - last_process_time >= 0.3:
+            if current_time - last_process_time >= 0.05:
                 cropped_plate = crop_and_return(frame, (ymin, xmin, ymax, xmax))
                 plate_characters = predict_plate.get_license_plate(cropped_plate)
-                
+
                 # Check if the detected plate matches the specified patterns
-                if plate_characters in ["4552KAA", "7158GGA"]:
-                    print(f'Detected Plate!!!!!!!!!!!!!!!!: {plate_characters}')
-                    
+                if plate_characters in ["4565KAA", "4552KAA", "7158GGA", "8485LTR"]:
+                    print(f'!!!!!!!Detected Plate: {plate_characters}')
+                    # Append the detected plate, time, and location to the CSV file
+                    detection_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(current_time))
+                    df = pd.DataFrame([[plate_characters, detection_time, 'Tuwaiq Academy']],
+                                      columns=['plate_number', 'detection_time', 'location'])
+                    df.to_csv(csv_file, mode='a', header=False, index=False)
+
                 last_process_time = current_time  # Update the last process time
                 index += 1
 
