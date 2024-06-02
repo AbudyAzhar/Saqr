@@ -3,6 +3,10 @@ import cv2
 import numpy as np
 import pandas as pd
 from ultralytics import YOLO
+import os
+
+script_dir = os.path.dirname(__file__)
+os.chdir(script_dir)
 
 class_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'D', 'E', 'G', 'H', 'J', 'K', 'L', 'N', 'R', 'S', 'T', 'U', 'V', 'X', 'Z']
 

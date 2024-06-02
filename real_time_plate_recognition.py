@@ -4,8 +4,22 @@ import predict_plate  # Ensure this module is accessible
 import cv2
 import os
 import time
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from tensorflow.lite.python.interpreter import Interpreter
 from matplotlib import pyplot as plt
+
+script_dir = os.path.dirname(__file__)
+os.chdir(script_dir)
+
+scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+         "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("saqr-425203-0e5b17d7e315.json", scope)
+client = gspread.authorize(creds)
+
+# Open the Google Sheet
+sheet = client.open("License Plate Detection").sheet1
+
 
 # Set paths and parameters
 modelpath = 'detect.tflite'
@@ -130,9 +144,7 @@ while True:
                     print(f'!!!!!!!Detected Plate: {plate_characters}')
                     # Append the detected plate, time, and location to the CSV file
                     detection_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(current_time))
-                    df = pd.DataFrame([[plate_characters, detection_time, 'Tuwaiq Academy']],
-                                      columns=['plate_number', 'detection_time', 'location'])
-                    df.to_csv(csv_file, mode='a', header=False, index=False)
+                    sheet.append_row([plate_characters, detection_time, 'Tuwaiq Academy'])
 
                 last_process_time = current_time  # Update the last process time
                 index += 1

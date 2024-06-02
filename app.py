@@ -7,6 +7,11 @@ import time
 import numpy as np
 from tensorflow.lite.python.interpreter import Interpreter
 import predict_plate
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+script_dir = os.path.dirname(__file__)
+os.chdir(script_dir)
 
 # Define the path to the CSV file
 csv_file_path = 'stolen_vehicles.csv'
@@ -208,13 +213,38 @@ elif page == 'Live License Plate Detection':
         st.experimental_rerun()
 
 elif page == 'View Detected Plates':
-    st.subheader('View Detected Plates')
-    detected_data['Flagged'] = detected_data['License Plate'].isin(data['License Plate']).apply(
-        lambda x: 'Yes' if x else 'No')
-    st.write(detected_data)
+    # Setup Google Sheets connection
+    scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+             "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_name("saqr-425203-0e5b17d7e315.json", scope)
+    client = gspread.authorize(creds)
 
-    if st.button('Clear Detected Plates'):
-        detected_data = pd.DataFrame(columns=['License Plate', 'Location', 'Time'])
-        save_data(detected_data, detected_plates_csv)
-        st.success('Detected plates cleared.')
-        st.write(detected_data)
+    # Open the Google Sheet
+    sheet = client.open("License Plate Detection").sheet1
+
+    def load_sheet_data():
+        """Load data from Google Sheet"""
+        records = sheet.get_all_records()
+        return pd.DataFrame(records)
+
+    st.title("Real-Time License Plate Monitoring")
+
+    # Load data from Google Sheets
+    data_load_state = st.text('Loading data...')
+    data = load_sheet_data()
+    data_load_state.text('Loading data...done!')
+
+    # Display the data
+    st.subheader('Detected License Plates')
+    data_placeholder = st.empty()
+    data_placeholder.write(data)
+
+    # Refresh data every few seconds
+    refresh_rate = 5  # Refresh rate in seconds
+
+    # Auto-refresh using while loop and time.sleep
+    while True:
+        time.sleep(refresh_rate)
+        data = load_sheet_data()
+        data_placeholder.write(data)
+        st.experimental_rerun()
