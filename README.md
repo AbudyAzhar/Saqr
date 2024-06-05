@@ -67,3 +67,9 @@ Saqr is a real-time license plate recognition system designed to detect stolen o
 - **detected.csv**: Logs detected license plates with columns: `plate_number`, `detection_time`, `location`.
 - **detected_plates.csv**: Detailed detected plates log with columns: `License Plate`, `Location`, `Time`.
 - **stolen_vehicles.csv**: Database of stolen vehicles with columns: `License Plate`, `Location`, and `Time`.
+- 
+
+
+## Dataset link
+https://www.kaggle.com/datasets/riotulab/saudi-license-plate-characters
+
